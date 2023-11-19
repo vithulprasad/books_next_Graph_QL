@@ -1,6 +1,6 @@
 import {request} from '../lib/graphql-client'
 
-export const list = async (value) => {
+export const list = async (value:any) => {
     console.log(value,'oooooooooooooooooooo');
     
     let query = ""

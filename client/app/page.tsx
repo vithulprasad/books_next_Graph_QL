@@ -1,8 +1,9 @@
-
+"use client"
 import Book from './component/book'
 import Adding from './component/Adding'
 import Authors from './component/authors'
 import {request} from '../lib/graphql-client'
+import { useEffect, useState } from 'react'
 
 const query = `
 query{
@@ -12,11 +13,30 @@ query{
        
     }
 }`
+type Author = {
+  name: string;
+  id: string;
+};
 
 
 
-export default async function Home() {
-      const {authors} = await request(query)
+export default  function Home() {
+  const [authors, setAuthors] = useState<Author[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await request(query) as { authors: Author[] };
+        if (result && result.authors) {
+          setAuthors(result.authors);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    
+    
+    fetchData();
+  }, []);
   return (
     <main className="max-w-md mx-auto bg-white   overflow-hidden md:max-w-full">
       <div className="md:flex">
